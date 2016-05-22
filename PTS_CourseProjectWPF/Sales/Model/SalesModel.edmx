@@ -1,0 +1,682 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SalesDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TaxNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="Bulstat" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Mol" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BlockIfNoPayment" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ItemGroups">
+          <Key>
+            <PropertyRef Name="ItemGroupId" />
+          </Key>
+          <Property Name="ItemGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemGroupId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="IsService" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentAgreements">
+          <Key>
+            <PropertyRef Name="AgreementId" />
+          </Key>
+          <Property Name="AgreementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NumOfPayments" Type="int" Nullable="false" />
+          <Property Name="DateOfPayment" Type="int" Nullable="false" />
+          <Property Name="FromDate" Type="date" Nullable="false" />
+          <Property Name="ToDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentAgreement" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="19" Scale="2" Nullable="false" />
+          <Property Name="ExternalDocumentId" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PriceTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="FromDate" Type="date" Nullable="false" />
+          <Property Name="ToDate" Type="date" />
+          <Property Name="MinQty" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="19" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PriceTable_ItemGroups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ItemGroupId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PriceTable_Items">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SalesLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SalesId" Type="int" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="Qty" Type="decimal" Precision="19" Scale="2" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="19" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SalesTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentAgreement" Type="int" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="ExternalDocumentId" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__PriceTabl__Custo__5BE2A6F2">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="PriceTable" Type="Self.PriceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="PriceTable">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PriceTabl__ItemG__74AE54BC">
+          <End Role="ItemGroups" Type="Self.ItemGroups" Multiplicity="1" />
+          <End Role="PriceTable_ItemGroups" Type="Self.PriceTable_ItemGroups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemGroups">
+              <PropertyRef Name="ItemGroupId" />
+            </Principal>
+            <Dependent Role="PriceTable_ItemGroups">
+              <PropertyRef Name="ItemGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PriceTabl__ItemI__72C60C4A">
+          <End Role="Items" Type="Self.Items" Multiplicity="1" />
+          <End Role="PriceTable_Items" Type="Self.PriceTable_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="PriceTable_Items">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PriceTable_I__Id__71D1E811">
+          <End Role="PriceTable" Type="Self.PriceTable" Multiplicity="1" />
+          <End Role="PriceTable_Items" Type="Self.PriceTable_Items" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PriceTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PriceTable_Items">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PriceTable_I__Id__73BA3083">
+          <End Role="PriceTable" Type="Self.PriceTable" Multiplicity="1" />
+          <End Role="PriceTable_ItemGroups" Type="Self.PriceTable_ItemGroups" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PriceTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PriceTable_ItemGroups">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalesLine__ItemI__5812160E">
+          <End Role="Items" Type="Self.Items" Multiplicity="1" />
+          <End Role="SalesLine" Type="Self.SalesLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="SalesLine">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalesLine__Sales__571DF1D5">
+          <End Role="SalesTable" Type="Self.SalesTable" Multiplicity="1" />
+          <End Role="SalesLine" Type="Self.SalesLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SalesLine">
+              <PropertyRef Name="SalesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalesTabl__Custo__52593CB8">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="SalesTable" Type="Self.SalesTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="SalesTable">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalesTabl__Payme__5165187F">
+          <End Role="PaymentAgreements" Type="Self.PaymentAgreements" Multiplicity="0..1" />
+          <End Role="SalesTable" Type="Self.SalesTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentAgreements">
+              <PropertyRef Name="AgreementId" />
+            </Principal>
+            <Dependent Role="SalesTable">
+              <PropertyRef Name="PaymentAgreement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Items_ItemGroups">
+          <End Role="ItemGroups" Type="Self.ItemGroups" Multiplicity="1" />
+          <End Role="Items" Type="Self.Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemGroups">
+              <PropertyRef Name="ItemGroupId" />
+            </Principal>
+            <Dependent Role="Items">
+              <PropertyRef Name="ItemGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentTable_PaymentAgreements">
+          <End Role="PaymentAgreements" Type="Self.PaymentAgreements" Multiplicity="1" />
+          <End Role="PaymentTable" Type="Self.PaymentTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentAgreements">
+              <PropertyRef Name="AgreementId" />
+            </Principal>
+            <Dependent Role="PaymentTable">
+              <PropertyRef Name="PaymentAgreement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="getPrice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+          <Parameter Name="itemId" Type="int" Mode="In" />
+          <Parameter Name="customerId" Type="int" Mode="In" />
+          <Parameter Name="qty" Type="decimal" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
+        </Function>
+        <Function Name="PriceTable_ItemGroups_exists" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="PriceTable_Items_exists" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="SalesDBModelStoreContainer">
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemGroups" EntityType="Self.ItemGroups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentAgreements" EntityType="Self.PaymentAgreements" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentTable" EntityType="Self.PaymentTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceTable" EntityType="Self.PriceTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceTable_ItemGroups" EntityType="Self.PriceTable_ItemGroups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriceTable_Items" EntityType="Self.PriceTable_Items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesLine" EntityType="Self.SalesLine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesTable" EntityType="Self.SalesTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__PriceTabl__Custo__5BE2A6F2" Association="Self.FK__PriceTabl__Custo__5BE2A6F2">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="PriceTable" EntitySet="PriceTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PriceTabl__ItemG__74AE54BC" Association="Self.FK__PriceTabl__ItemG__74AE54BC">
+            <End Role="ItemGroups" EntitySet="ItemGroups" />
+            <End Role="PriceTable_ItemGroups" EntitySet="PriceTable_ItemGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PriceTabl__ItemI__72C60C4A" Association="Self.FK__PriceTabl__ItemI__72C60C4A">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="PriceTable_Items" EntitySet="PriceTable_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PriceTable_I__Id__71D1E811" Association="Self.FK__PriceTable_I__Id__71D1E811">
+            <End Role="PriceTable" EntitySet="PriceTable" />
+            <End Role="PriceTable_Items" EntitySet="PriceTable_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PriceTable_I__Id__73BA3083" Association="Self.FK__PriceTable_I__Id__73BA3083">
+            <End Role="PriceTable" EntitySet="PriceTable" />
+            <End Role="PriceTable_ItemGroups" EntitySet="PriceTable_ItemGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalesLine__ItemI__5812160E" Association="Self.FK__SalesLine__ItemI__5812160E">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="SalesLine" EntitySet="SalesLine" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalesLine__Sales__571DF1D5" Association="Self.FK__SalesLine__Sales__571DF1D5">
+            <End Role="SalesTable" EntitySet="SalesTable" />
+            <End Role="SalesLine" EntitySet="SalesLine" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalesTabl__Custo__52593CB8" Association="Self.FK__SalesTabl__Custo__52593CB8">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="SalesTable" EntitySet="SalesTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalesTabl__Payme__5165187F" Association="Self.FK__SalesTabl__Payme__5165187F">
+            <End Role="PaymentAgreements" EntitySet="PaymentAgreements" />
+            <End Role="SalesTable" EntitySet="SalesTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Items_ItemGroups" Association="Self.FK_Items_ItemGroups">
+            <End Role="ItemGroups" EntitySet="ItemGroups" />
+            <End Role="Items" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentTable_PaymentAgreements" Association="Self.FK_PaymentTable_PaymentAgreements">
+            <End Role="PaymentAgreements" EntitySet="PaymentAgreements" />
+            <End Role="PaymentTable" EntitySet="PaymentTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SalesDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TaxNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="Bulstat" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BlockIfNoPayment" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PriceTable" Relationship="Self.FK__PriceTabl__Custo__5BE2A6F2" FromRole="Customers" ToRole="PriceTable" />
+          <NavigationProperty Name="SalesTable" Relationship="Self.FK__SalesTabl__Custo__52593CB8" FromRole="Customers" ToRole="SalesTable" />
+        </EntityType>
+        <EntityType Name="ItemGroups">
+          <Key>
+            <PropertyRef Name="ItemGroupId" />
+          </Key>
+          <Property Name="ItemGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Items" Relationship="Self.FK_Items_ItemGroups" FromRole="ItemGroups" ToRole="Items" />
+          <NavigationProperty Name="PriceTable" Relationship="Self.PriceTable_ItemGroups" FromRole="ItemGroups" ToRole="PriceTable" />
+        </EntityType>
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemGroupId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsService" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ItemGroups" Relationship="Self.FK_Items_ItemGroups" FromRole="Items" ToRole="ItemGroups" />
+          <NavigationProperty Name="SalesLine" Relationship="Self.FK__SalesLine__ItemI__5812160E" FromRole="Items" ToRole="SalesLine" />
+          <NavigationProperty Name="PriceTable" Relationship="Self.PriceTable_Items" FromRole="Items" ToRole="PriceTable" />
+        </EntityType>
+        <EntityType Name="PaymentAgreements">
+          <Key>
+            <PropertyRef Name="AgreementId" />
+          </Key>
+          <Property Name="AgreementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NumOfPayments" Type="Int32" Nullable="false" />
+          <Property Name="DateOfPayment" Type="Int32" Nullable="false" />
+          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ToDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="SalesTable" Relationship="Self.FK__SalesTabl__Payme__5165187F" FromRole="PaymentAgreements" ToRole="SalesTable" />
+          <NavigationProperty Name="PaymentTable" Relationship="Self.FK_PaymentTable_PaymentAgreements" FromRole="PaymentAgreements" ToRole="PaymentTable" />
+        </EntityType>
+        <EntityType Name="PaymentTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentAgreement" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="2" Nullable="false" />
+          <Property Name="ExternalDocumentId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PaymentAgreements" Relationship="Self.FK_PaymentTable_PaymentAgreements" FromRole="PaymentTable" ToRole="PaymentAgreements" />
+        </EntityType>
+        <EntityType Name="PriceTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ToDate" Type="DateTime" Precision="0" />
+          <Property Name="MinQty" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__PriceTabl__Custo__5BE2A6F2" FromRole="PriceTable" ToRole="Customers" />
+          <NavigationProperty Name="ItemGroups" Relationship="Self.PriceTable_ItemGroups" FromRole="PriceTable" ToRole="ItemGroups" />
+          <NavigationProperty Name="Items" Relationship="Self.PriceTable_Items" FromRole="PriceTable" ToRole="Items" />
+        </EntityType>
+        <EntityType Name="SalesLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SalesId" Type="Int32" Nullable="false" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="Qty" Type="Decimal" Precision="19" Scale="2" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Items" Relationship="Self.FK__SalesLine__ItemI__5812160E" FromRole="SalesLine" ToRole="Items" />
+          <NavigationProperty Name="SalesTable" Relationship="Self.FK__SalesLine__Sales__571DF1D5" FromRole="SalesLine" ToRole="SalesTable" />
+        </EntityType>
+        <EntityType Name="SalesTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentAgreement" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ExternalDocumentId" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__SalesTabl__Custo__52593CB8" FromRole="SalesTable" ToRole="Customers" />
+          <NavigationProperty Name="PaymentAgreements" Relationship="Self.FK__SalesTabl__Payme__5165187F" FromRole="SalesTable" ToRole="PaymentAgreements" />
+          <NavigationProperty Name="SalesLine" Relationship="Self.FK__SalesLine__Sales__571DF1D5" FromRole="SalesTable" ToRole="SalesLine" />
+        </EntityType>
+        <Association Name="FK__PriceTabl__Custo__5BE2A6F2">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="PriceTable" Type="Self.PriceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="PriceTable">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalesTabl__Custo__52593CB8">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="SalesTable" Type="Self.SalesTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="SalesTable">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Items_ItemGroups">
+          <End Role="ItemGroups" Type="Self.ItemGroups" Multiplicity="1" />
+          <End Role="Items" Type="Self.Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemGroups">
+              <PropertyRef Name="ItemGroupId" />
+            </Principal>
+            <Dependent Role="Items">
+              <PropertyRef Name="ItemGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalesLine__ItemI__5812160E">
+          <End Role="Items" Type="Self.Items" Multiplicity="1" />
+          <End Role="SalesLine" Type="Self.SalesLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="SalesLine">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalesTabl__Payme__5165187F">
+          <End Role="PaymentAgreements" Type="Self.PaymentAgreements" Multiplicity="0..1" />
+          <End Role="SalesTable" Type="Self.SalesTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentAgreements">
+              <PropertyRef Name="AgreementId" />
+            </Principal>
+            <Dependent Role="SalesTable">
+              <PropertyRef Name="PaymentAgreement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PaymentTable_PaymentAgreements">
+          <End Role="PaymentAgreements" Type="Self.PaymentAgreements" Multiplicity="1" />
+          <End Role="PaymentTable" Type="Self.PaymentTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentAgreements">
+              <PropertyRef Name="AgreementId" />
+            </Principal>
+            <Dependent Role="PaymentTable">
+              <PropertyRef Name="PaymentAgreement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SalesLine__Sales__571DF1D5">
+          <End Role="SalesTable" Type="Self.SalesTable" Multiplicity="1" />
+          <End Role="SalesLine" Type="Self.SalesLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SalesLine">
+              <PropertyRef Name="SalesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PriceTable_ItemGroups">
+          <End Role="ItemGroups" Type="Self.ItemGroups" Multiplicity="0..1" />
+          <End Role="PriceTable" Type="Self.PriceTable" Multiplicity="*" />
+        </Association>
+        <Association Name="PriceTable_Items">
+          <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
+          <End Role="PriceTable" Type="Self.PriceTable" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="SalesDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customers" />
+          <EntitySet Name="ItemGroups" EntityType="Self.ItemGroups" />
+          <EntitySet Name="Items" EntityType="Self.Items" />
+          <EntitySet Name="PaymentAgreements" EntityType="Self.PaymentAgreements" />
+          <EntitySet Name="PaymentTable" EntityType="Self.PaymentTable" />
+          <EntitySet Name="PriceTable" EntityType="Self.PriceTable" />
+          <EntitySet Name="SalesLine" EntityType="Self.SalesLine" />
+          <EntitySet Name="SalesTable" EntityType="Self.SalesTable" />
+          <AssociationSet Name="FK__PriceTabl__Custo__5BE2A6F2" Association="Self.FK__PriceTabl__Custo__5BE2A6F2">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="PriceTable" EntitySet="PriceTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalesTabl__Custo__52593CB8" Association="Self.FK__SalesTabl__Custo__52593CB8">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="SalesTable" EntitySet="SalesTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Items_ItemGroups" Association="Self.FK_Items_ItemGroups">
+            <End Role="ItemGroups" EntitySet="ItemGroups" />
+            <End Role="Items" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalesLine__ItemI__5812160E" Association="Self.FK__SalesLine__ItemI__5812160E">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="SalesLine" EntitySet="SalesLine" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalesTabl__Payme__5165187F" Association="Self.FK__SalesTabl__Payme__5165187F">
+            <End Role="PaymentAgreements" EntitySet="PaymentAgreements" />
+            <End Role="SalesTable" EntitySet="SalesTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PaymentTable_PaymentAgreements" Association="Self.FK_PaymentTable_PaymentAgreements">
+            <End Role="PaymentAgreements" EntitySet="PaymentAgreements" />
+            <End Role="PaymentTable" EntitySet="PaymentTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SalesLine__Sales__571DF1D5" Association="Self.FK__SalesLine__Sales__571DF1D5">
+            <End Role="SalesTable" EntitySet="SalesTable" />
+            <End Role="SalesLine" EntitySet="SalesLine" />
+          </AssociationSet>
+          <AssociationSet Name="PriceTable_ItemGroups" Association="Self.PriceTable_ItemGroups">
+            <End Role="ItemGroups" EntitySet="ItemGroups" />
+            <End Role="PriceTable" EntitySet="PriceTable" />
+          </AssociationSet>
+          <AssociationSet Name="PriceTable_Items" Association="Self.PriceTable_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="PriceTable" EntitySet="PriceTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SalesDBModelStoreContainer" CdmEntityContainer="SalesDBEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="SalesDBModel.Customers">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="TaxNo" ColumnName="TaxNo" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Bulstat" ColumnName="Bulstat" />
+                <ScalarProperty Name="Mol" ColumnName="Mol" />
+                <ScalarProperty Name="BlockIfNoPayment" ColumnName="BlockIfNoPayment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemGroups">
+            <EntityTypeMapping TypeName="SalesDBModel.ItemGroups">
+              <MappingFragment StoreEntitySet="ItemGroups">
+                <ScalarProperty Name="ItemGroupId" ColumnName="ItemGroupId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="SalesDBModel.Items">
+              <MappingFragment StoreEntitySet="Items">
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="ItemGroupId" ColumnName="ItemGroupId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsService" ColumnName="IsService" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentAgreements">
+            <EntityTypeMapping TypeName="SalesDBModel.PaymentAgreements">
+              <MappingFragment StoreEntitySet="PaymentAgreements">
+                <ScalarProperty Name="AgreementId" ColumnName="AgreementId" />
+                <ScalarProperty Name="NumOfPayments" ColumnName="NumOfPayments" />
+                <ScalarProperty Name="DateOfPayment" ColumnName="DateOfPayment" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentTable">
+            <EntityTypeMapping TypeName="SalesDBModel.PaymentTable">
+              <MappingFragment StoreEntitySet="PaymentTable">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PaymentAgreement" ColumnName="PaymentAgreement" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ExternalDocumentId" ColumnName="ExternalDocumentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriceTable">
+            <EntityTypeMapping TypeName="SalesDBModel.PriceTable">
+              <MappingFragment StoreEntitySet="PriceTable">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="MinQty" ColumnName="MinQty" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalesLine">
+            <EntityTypeMapping TypeName="SalesDBModel.SalesLine">
+              <MappingFragment StoreEntitySet="SalesLine">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SalesId" ColumnName="SalesId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalesTable">
+            <EntityTypeMapping TypeName="SalesDBModel.SalesTable">
+              <MappingFragment StoreEntitySet="SalesTable">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PaymentAgreement" ColumnName="PaymentAgreement" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ExternalDocumentId" ColumnName="ExternalDocumentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PriceTable_ItemGroups" TypeName="SalesDBModel.PriceTable_ItemGroups" StoreEntitySet="PriceTable_ItemGroups">
+            <EndProperty Name="ItemGroups">
+              <ScalarProperty Name="ItemGroupId" ColumnName="ItemGroupId" />
+            </EndProperty>
+            <EndProperty Name="PriceTable">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PriceTable_Items" TypeName="SalesDBModel.PriceTable_Items" StoreEntitySet="PriceTable_Items">
+            <EndProperty Name="Items">
+              <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+            </EndProperty>
+            <EndProperty Name="PriceTable">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

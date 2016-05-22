@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="92ff253d757a41eb93649ae8100b89d4" Name="Diagram1">
+        <EntityTypeShape EntityType="SalesDBModel.Customers" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalesDBModel.ItemGroups" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalesDBModel.Items" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalesDBModel.PaymentAgreements" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalesDBModel.PaymentTable" Width="1.5" PointX="6" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalesDBModel.PriceTable" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalesDBModel.SalesLine" Width="1.5" PointX="8.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalesDBModel.SalesTable" Width="1.5" PointX="6" PointY="4.625" IsExpanded="true" />
+        <AssociationConnector Association="SalesDBModel.FK__PriceTabl__Custo__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="SalesDBModel.FK__SalesTabl__Custo__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="SalesDBModel.FK_Items_ItemGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="SalesDBModel.FK__SalesLine__ItemI__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="SalesDBModel.FK__SalesTabl__Payme__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="SalesDBModel.FK_PaymentTable_PaymentAgreements" ManuallyRouted="false" />
+        <AssociationConnector Association="SalesDBModel.FK__SalesLine__Sales__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="SalesDBModel.PriceTable_ItemGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="SalesDBModel.PriceTable_Items" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
