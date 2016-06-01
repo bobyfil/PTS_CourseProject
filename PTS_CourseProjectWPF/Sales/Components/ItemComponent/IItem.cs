@@ -11,6 +11,7 @@ namespace Sales.ItemComponent
     {
         Items getItem(int itemId);
         List<Items> getAllItems();
+
         Items createItem(int itemGroupId, string name, string description, bool isService);
         void updateItem(Items updatedItem);
         void deleteItem(int itemId);
