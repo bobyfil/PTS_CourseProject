@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="ViewModel\PriceViewModel.cs" />
     <Compile Include="View\Price.xaml.cs">
       <DependentUpon>Price.xaml</DependentUpon>
