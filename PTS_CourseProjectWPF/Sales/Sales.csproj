@@ -82,8 +82,8 @@
     </ApplicationDefinition>
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="ViewModel\PriceViewModel.cs" />
-    <Compile Include="View\Price.xaml.cs">
-      <DependentUpon>Price.xaml</DependentUpon>
+    <Compile Include="View\PriceView.xaml.cs">
+      <DependentUpon>PriceView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -140,7 +140,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Price.xaml">
+    <Page Include="View\PriceView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
