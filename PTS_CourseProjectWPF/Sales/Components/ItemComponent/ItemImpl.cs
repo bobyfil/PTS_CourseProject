@@ -19,17 +19,17 @@ namespace Sales.ItemComponent
             item.Description = description;
             item.IsService = isService;
 
-            dbContext.Items.InsertOnSubmit(item);
-            dbContext.Items.SubmitChanges();
+            dbContext.Items.Add(item);
+            dbContext.SaveChanges();
 
             return item;
         }
 
         public void  deleteItem(int itemId)
         {
-            Items itemForDelete = dbContext.Items.Where(item => item.ItemId.Equals(itemId));
-            dbContext.Items.DeleteOnSubmit(itemForDelete);
-            dbContext.Items.SubmitChanges();
+            Items itemForDelete = dbContext.Items.Where(item => item.ItemId.Equals(itemId)).SingleOrDefault();
+            dbContext.Items.Remove(itemForDelete);
+            dbContext.SaveChanges();
         }
 
         public List<Items> getAllItems()
@@ -38,53 +38,42 @@ namespace Sales.ItemComponent
             return fetchedItems;
         }
 
+       
+
         public Items getItem(int itemId)
         {
-            Items fetchedItem = dbContext.Items.Where(item => item.ItemId.Equals(itemId));
+            Items fetchedItem = dbContext.Items.Where(item => item.ItemId.Equals(itemId)).SingleOrDefault();
             return fetchedItem;
         }
 
         public void updateItem(Items updatedItem)
         {
-            Items itemToUpdate = dbContext.Items.Where(item => item.ItemId.Equals(updatedItem.ItemId));
-            itemToUpdate.ItemGroupId = updatedItem.ItemGroupId;
-            itemToUpdate.Name = updatedItem.Name;
-            itemToUpdate.Description = updatedItem.Description;
-            itemToUpdate.IsService = updatedItem.IsService;
-
-            dbContext.Items.UpdateOnSubmit(itemToUpdate);
-            dbContext.Items.SubmitChanges();
+            Items itemToUpdate = dbContext.Items.Where(item => item.ItemId.Equals(updatedItem.ItemId)).SingleOrDefault();
+            dbContext.Entry(itemToUpdate).CurrentValues.SetValues(updatedItem);
+            dbContext.SaveChanges();
 
         }
 
-        ItemGroups IItem.createItemGroup(string name, string Description)
-        {
-            throw new NotImplementedException();
-        }
 
-        ItemGroups createItemGroup(string name, string description)
+       public ItemGroups createItemGroup(string name, string description)
         {
             ItemGroups itemGroup = new ItemGroups();
             itemGroup.Name = name;
             itemGroup.Description = description;
             
-            dbContext.ItemGroups.InsertOnSubmit(itemGroup);
-            dbContext.ItemGroups.SubmitChanges();
+            dbContext.ItemGroups.Add(itemGroup);
+            dbContext.SaveChanges();
 
             return itemGroup;
         }
 
-        void IItem.deleteItemGroup(int ItemGroupId)
-        {
-            throw new NotImplementedException();
-        }
 
-        void deleteItemGroup(int ItemGroupId)
-        {
 
-            ItemGroups itemGroupForDelete = dbContext.ItemGroups.Where(itemGroup => itemGroup.ItemGroupId.Equals(ItemGroupId));
-            dbContext.ItemGroups.DeleteOnSubmit(itemGroupForDelete);
-            dbContext.ItemGroups.SubmitChanges();
+        public void deleteItemGroup(int ItemGroupId)
+        {
+            ItemGroups itemGroupForDelete = dbContext.ItemGroups.Where(itemGroup => itemGroup.ItemGroupId.Equals(ItemGroupId)).SingleOrDefault();
+            dbContext.ItemGroups.Remove(itemGroupForDelete);
+            dbContext.SaveChanges();
         }
     }
 }
