@@ -1,0 +1,19 @@
+﻿<Window x:Class="Sales.View.Price"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sales.View"
+        xmlns:vm="clr-namespace:Sales.ViewModel"
+        mc:Ignorable="d"
+        Title="Price" Height="300" Width="300">
+    <Window.DataContext>
+        <vm:PriceViewModel />
+    </Window.DataContext>
+    <StackPanel Margin="20">
+        
+        <TextBlock TextAlignment="Center" Text="{Binding Header}"/>
+        <DataGrid Margin="0,10,0,0" ItemsSource="{Binding DataTable}"></DataGrid>
+
+    </StackPanel>
+</Window>

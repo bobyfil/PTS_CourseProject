@@ -88,6 +88,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Components\ItemComponent\IItem.cs" />
+    <Compile Include="Components\ItemComponent\ItemImpl.cs" />
+    <Compile Include="Components\PriceComponent\IPrice.cs" />
+    <Compile Include="Components\PriceComponent\PriceImpl.cs" />
     <Compile Include="Model\Customers.cs">
       <DependentUpon>SalesModel.tt</DependentUpon>
     </Compile>
