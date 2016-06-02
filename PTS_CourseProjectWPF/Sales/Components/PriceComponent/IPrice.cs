@@ -10,10 +10,6 @@ namespace Sales.Components.PriceComponent
     interface IPrice
     {
         IEnumerable<PriceTable> getAllPrices();
-        IEnumerable<PriceTable> getItemPricesPerCustomer(int customerId);
-        IEnumerable<PriceTable> getCustomerPricesPerItem(int itemId);
-        IEnumerable<PriceTable> getCustomerPricesPerItemGroup(int itemGroupId);
-        IEnumerable<PriceTable> getItemGroupPricesPerCustomer(int customerId);
         IEnumerable<PriceTable> getCustomerPrices(int customerId);
         IEnumerable<PriceTable> getItemGroupPrices(int itemGroupId);
         IEnumerable<PriceTable> getItemPrices(int itemId);

@@ -9,7 +9,7 @@ namespace Sales.Components.PriceComponent
 {
     class PriceImpl : IPrice
     {
-        SalesDBEntities context;
+        private SalesDBEntities context;
 
         public void addPriceCustomer(int customerId, decimal price, DateTime fromDate, DateTime toDate = default(DateTime), int qty = 0)
         {
@@ -88,32 +88,14 @@ namespace Sales.Components.PriceComponent
             return records;
         }
 
-        public IEnumerable<PriceTable> getCustomerPricesPerItem(int itemId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<PriceTable> getCustomerPricesPerItemGroup(int itemGroupId)
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<PriceTable> getItemGroupPrices(int itemGroupId)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<PriceTable> getItemGroupPricesPerCustomer(int customerId)
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<PriceTable> getItemPrices(int itemId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<PriceTable> getItemPricesPerCustomer(int customerId)
         {
             throw new NotImplementedException();
         }
