@@ -9,7 +9,7 @@ namespace Sales.Components.PriceComponent
 {
     interface IPrice
     {
-        IEnumerable<PriceTable> getAllPrices();
+        List<PriceTable> getAllPrices();
         IEnumerable<PriceTable> getCustomerPrices(int customerId);
         IEnumerable<PriceTable> getItemGroupPrices(int itemGroupId);
         IEnumerable<PriceTable> getItemPrices(int itemId);

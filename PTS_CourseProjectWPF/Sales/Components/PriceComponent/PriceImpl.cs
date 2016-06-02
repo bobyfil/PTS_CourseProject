@@ -64,13 +64,16 @@ namespace Sales.Components.PriceComponent
             }
         }
 
-        public IEnumerable<PriceTable> getAllPrices()
+        public List<PriceTable> getAllPrices()
         {
-            IEnumerable<PriceTable> records;
+            List<PriceTable> records;
             using (context = new SalesDBEntities())
             {
-                records = from pt in context.PriceTable
-                          select pt;
+                var prices =
+                        from pt in context.PriceTable
+                         select new { pt, pt.Items };
+                records = prices.AsEnumerable().Select(p => p.pt).ToList();
+                
             }
             return records;
 

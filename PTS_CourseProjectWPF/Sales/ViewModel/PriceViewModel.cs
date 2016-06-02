@@ -16,10 +16,16 @@ namespace Sales.ViewModel
     {
         private string header;
         private int customerId;
-        public DataTable dataTable
+        private DataTable dataTable;
+        public DataTable DataTable
         {
+            get
+            {
+                return dataTable;
+            }
             set
             {
+                dataTable = value;
                 PropChanged();
             }
         }
@@ -54,7 +60,7 @@ namespace Sales.ViewModel
         public PriceViewModel()
         {
             priceManager = new PriceImpl();
-            header = "Prices";
+            header = "Prices for Customer: Petrov";
             dataTable = getPrices();
         }
 
@@ -88,21 +94,21 @@ namespace Sales.ViewModel
         {
             var tb = new DataTable(typeof(PriceTable).Name);
             
-            PropertyInfo[] props = typeof(PriceTable).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            
             tb.Columns.Add("Item", typeof(int));
-            foreach (var prop in props)
-            {
-                tb.Columns.Add(prop.Name, prop.PropertyType);
-            }
+            tb.Columns.Add("Price", typeof(decimal));
+            tb.Columns.Add("From date", typeof(DateTime));
+            tb.Columns.Add("To date", typeof(DateTime));
+            tb.Columns.Add("Min qty", typeof(int));
 
             foreach (var item in priceManager.getAllPrices())
             {
-                var values = new object[props.Length + 1];
+                var values = new object[5];
                 values[0] = item.Items.ItemId;
-                for (var i = 1; i < props.Length + 1; i++)
-                {
-                    values[i] = props[i - 1].GetValue(item, null);
-                }
+                values[1] = item.Price;
+                values[2] = item.FromDate;
+                values[3] = item.ToDate;
+                values[4] = item.MinQty;
 
                 tb.Rows.Add(values);
             }
